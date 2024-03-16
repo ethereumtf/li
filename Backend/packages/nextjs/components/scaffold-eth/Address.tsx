@@ -1,52 +1,30 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { ethers } from "ethers";
+import { isAddress } from "ethers/lib/utils";
+import Blockies from "react-blockies";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Address as AddressType, getAddress, isAddress } from "viem";
-import { hardhat } from "viem/chains";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
-import { BlockieAvatar } from "~~/components/scaffold-eth";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
+import { getBlockExplorerAddressLink, getTargetNetwork } from "~~/utils/scaffold-eth";
 
-type AddressProps = {
-  address?: AddressType;
+type TAddressProps = {
+  address?: string;
   disableAddressLink?: boolean;
   format?: "short" | "long";
-  size?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
-};
-
-const blockieSizeMap = {
-  xs: 6,
-  sm: 7,
-  base: 8,
-  lg: 9,
-  xl: 10,
-  "2xl": 12,
-  "3xl": 15,
 };
 
 /**
  * Displays an address (or ENS) with a Blockie image and option to copy address.
  */
-export const Address = ({ address, disableAddressLink, format, size = "base" }: AddressProps) => {
+export const Address = ({ address, disableAddressLink, format }: TAddressProps) => {
   const [ens, setEns] = useState<string | null>();
   const [ensAvatar, setEnsAvatar] = useState<string | null>();
   const [addressCopied, setAddressCopied] = useState(false);
-  const checkSumAddress = address ? getAddress(address) : undefined;
 
-  const { targetNetwork } = useTargetNetwork();
-
-  const { data: fetchedEns } = useEnsName({
-    address: checkSumAddress,
-    enabled: isAddress(checkSumAddress ?? ""),
-    chainId: 1,
-  });
+  const { data: fetchedEns } = useEnsName({ address, enabled: isAddress(address ?? ""), chainId: 1 });
   const { data: fetchedEnsAvatar } = useEnsAvatar({
-    name: fetchedEns,
-    enabled: Boolean(fetchedEns),
+    address,
+    enabled: isAddress(address ?? ""),
     chainId: 1,
     cacheTime: 30_000,
   });
@@ -61,7 +39,7 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
   }, [fetchedEnsAvatar]);
 
   // Skeleton UI
-  if (!checkSumAddress) {
+  if (!address) {
     return (
       <div className="animate-pulse flex space-x-4">
         <div className="rounded-md bg-slate-300 h-6 w-6"></div>
@@ -72,37 +50,35 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
     );
   }
 
-  if (!isAddress(checkSumAddress)) {
+  if (!ethers.utils.isAddress(address)) {
     return <span className="text-error">Wrong address</span>;
   }
 
-  const blockExplorerAddressLink = getBlockExplorerAddressLink(targetNetwork, checkSumAddress);
-  let displayAddress = checkSumAddress?.slice(0, 6) + "..." + checkSumAddress?.slice(-4);
+  const blockExplorerAddressLink = getBlockExplorerAddressLink(getTargetNetwork(), address);
+  let displayAddress = address?.slice(0, 5) + "..." + address?.slice(-4);
 
   if (ens) {
     displayAddress = ens;
   } else if (format === "long") {
-    displayAddress = checkSumAddress;
+    displayAddress = address;
   }
 
   return (
     <div className="flex items-center">
       <div className="flex-shrink-0">
-        <BlockieAvatar
-          address={checkSumAddress}
-          ensImage={ensAvatar}
-          size={(blockieSizeMap[size] * 24) / blockieSizeMap["base"]}
-        />
+        {ensAvatar ? (
+          // Don't want to use nextJS Image here (and adding remote patterns for the URL)
+          // eslint-disable-next-line
+          <img className="rounded-full" src={ensAvatar} width={24} height={24} alt={`${address} avatar`} />
+        ) : (
+          <Blockies className="mx-auto rounded-full" size={8} seed={address.toLowerCase()} scale={3} />
+        )}
       </div>
       {disableAddressLink ? (
-        <span className={`ml-1.5 text-${size} font-normal`}>{displayAddress}</span>
-      ) : targetNetwork.id === hardhat.id ? (
-        <span className={`ml-1.5 text-${size} font-normal`}>
-          <Link href={blockExplorerAddressLink}>{displayAddress}</Link>
-        </span>
+        <span className="ml-1.5 text-lg font-normal">{displayAddress}</span>
       ) : (
         <a
-          className={`ml-1.5 text-${size} font-normal`}
+          className="ml-1.5 text-base font-normal"
           target="_blank"
           href={blockExplorerAddressLink}
           rel="noopener noreferrer"
@@ -117,7 +93,7 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
         />
       ) : (
         <CopyToClipboard
-          text={checkSumAddress}
+          text={address}
           onCopy={() => {
             setAddressCopied(true);
             setTimeout(() => {
