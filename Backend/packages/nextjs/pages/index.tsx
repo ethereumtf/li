@@ -218,7 +218,7 @@ const Home: NextPage = () => {
       </Head>
 
       <div className="flex items-center flex-col flex-grow pt-5">
-        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Lotto for Social Impact! | Amount raised for social impact : {fundValue} ETH</h1>
+        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Amount raised for social impact : {fundValue} ETH</h1>
 
         <div className="flex-grow bg-base-300 w-full px-8 py-5">
           <div className="items-center py-3 text-center">
