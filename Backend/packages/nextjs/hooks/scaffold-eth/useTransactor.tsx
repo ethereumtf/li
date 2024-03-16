@@ -73,7 +73,7 @@ export const useTransactor = (_signer?: Signer): TTransactionFunc => {
       notification.remove(notificationId);
 
       notification.success(
-        <TxnNotification message="Transaction completed successfully!" blockExplorerLink={blockExplorerTxURL} />,
+        <TxnNotification message="Please check the draw results!" blockExplorerLink={blockExplorerTxURL} />,
         {
           icon: "🎉",
         },
