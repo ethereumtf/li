@@ -148,12 +148,12 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Scaffold-ETH 2 App</title>
-        <meta name="description" content="Created with 🏗 scaffold-eth-2" />
+        <title>Lotto Impact</title>
+        <meta name="description" content="New conceopt of Universal Basic Income!" />
       </Head>
 
       <div className="flex items-center flex-col flex-grow pt-5">
-        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Roll a 0, 1 or 2 to win the prize!</h1>
+        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Lotto for Social Impack!</h1>
 
         <div className="flex-grow bg-base-300 w-full px-8 py-5">
           <div className="items-center py-3 text-center">
@@ -163,7 +163,7 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-12 m-auto">
             <div className="flex flex-col -order-first lg:order-none bg-base-100 px-4 py-2 w-full lg:min-w-[25%] min-h-[300px] text-center items-center max-w-xs rounded-3xl">
-              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Roll Events</h2>
+              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Trial</h2>
               <ul>
                 {players
                   .slice()
@@ -177,12 +177,12 @@ const Home: NextPage = () => {
             </div>
             <div className="flex flex-col justify-center w-full lg:min-w-[25%] min-h-[300px] bg-base-100 px-7 py-7 text-center items-center max-w-xs rounded-3xl">
               <button disabled={diceRolled} className="btn rounded-lg" onClick={rollTheDice}>
-                Roll the dice!
+                Start!
               </button>
               <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg}</div>
             </div>
             <div className="flex flex-col flex-grow order-last lg:-order-none lg:min-w-[25%] w-full min-h-[300px] bg-base-100 px-4 py-2 text-center items-center max-w-xs rounded-3xl">
-              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Winner Events</h2>
+              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Matched</h2>
               <ul>
                 {winners
                   .slice()
