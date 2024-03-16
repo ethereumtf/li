@@ -8,7 +8,7 @@ contract DiceGame {
     uint256 public nonce = 0;
     uint256 public prize = 0;
 
-    event Roll(address indexed player, uint256 roll);
+    event Roll(address indexed player, uint256 roll, uint256 roll1, uint256 roll2, uint256 roll3);
     event Winner(address winner, uint256 amount);
 
     constructor() payable {
@@ -47,10 +47,7 @@ contract DiceGame {
         nonce++;
         prize += ((msg.value * 40) / 100);
 
-        emit Roll(msg.sender, roll);
-        emit Roll(msg.sender, roll1);
-        emit Roll(msg.sender, roll2);
-        emit Roll(msg.sender, roll3);
+        emit Roll(msg.sender, roll, roll1, roll2, roll3);
 
         if (roll % 2 != 0) {
             return;

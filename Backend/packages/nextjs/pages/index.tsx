@@ -20,6 +20,9 @@ const ROLL_VALUE = "0.002";
 type Players = {
   player: string;
   roll: string;
+  roll1: string;
+  roll2: string;
+  roll3: string;
 };
 
 type Winners = {
@@ -32,6 +35,9 @@ const Home: NextPage = () => {
   const [winners, setWinners] = useState<Winners[]>([]);
   const [diceRolled, setDiceRolled] = useState<boolean>(false);
   const [diceRollImage, setDiceRollImage] = useState<string>("");
+  const [diceRollImage1, setDiceRollImage1] = useState<string>("");
+  const [diceRollImage2, setDiceRollImage2] = useState<string>("");
+  const [diceRollImage3, setDiceRollImage3] = useState<string>("");
   const [showEthValue, setShowEthValue] = useState<boolean>(true);
   // const [claiming, setClaiming] = useState<boolean>(false);
 
@@ -57,9 +63,15 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (isRollMinning) {
       setDiceRollImage("ROLL");
+      setDiceRollImage1("ROLL1");
+      setDiceRollImage2("ROLL2");
+      setDiceRollImage3("ROLL3");
     } else if (rollSuccessful) {
       setDiceRolled(false);
       setDiceRollImage(players[players.length - 1]?.roll);
+      setDiceRollImage1(players[players.length - 1]?.roll1);
+      setDiceRollImage2(players[players.length - 1]?.roll2);
+      setDiceRollImage3(players[players.length - 1]?.roll3);
     }
   }, [rollSuccessful, players]);
 
@@ -70,6 +82,9 @@ const Home: NextPage = () => {
       timeoutId = setTimeout(() => {
         setDiceRolled(false);
         setDiceRollImage("");
+        setDiceRollImage1("");
+        setDiceRollImage2("");
+        setDiceRollImage3("");
       }, 2000); // delay for 2 seconds
     }
     return () => clearTimeout(timeoutId);
@@ -105,14 +120,32 @@ const Home: NextPage = () => {
   }
 
   // Subscribe to the Roll event and set the players state.
+
+
   useScaffoldEventSubscriber({
     contractName: "DiceGame",
     eventName: "Roll",
-    listener: (player, roll) => {
+    listener: (player, roll, roll1, roll2, roll3) => {
       const numberRolled = roll?.toNumber().toString(16).toUpperCase();
-      setPlayers((prevPlayers): Players[] => [...prevPlayers, { player, roll: numberRolled }]);
+      const numberRolled1 = roll1?.toNumber().toString(16).toUpperCase();
+      const numberRolled2 = roll2?.toNumber().toString(16).toUpperCase();
+      const numberRolled3 = roll3?.toNumber().toString(16).toUpperCase();
+      setPlayers((prevPlayers): Players[] => [...prevPlayers, { player, roll: numberRolled, roll1: numberRolled1, roll2: numberRolled2, roll3: numberRolled3}]);
     },
+
   });
+
+  // useScaffoldEventSubscriber({
+  //   contractName: "DiceGame",
+  //   eventName: "Roll",
+  //   listener: (player, roll, roll1, roll2, roll3) => {
+  //     const numberRolled = roll?.toNumber().toString(16).toUpperCase();
+  //     const numberRolled1 = roll1?.toNumber().toString(16).toUpperCase();
+  //     const numberRolled2 = roll2?.toNumber().toString(16).toUpperCase();
+  //     const numberRolled3 = roll3?.toNumber().toString(16).toUpperCase();
+  //     setPlayers((prevPlayers): Players[] => [...prevPlayers, { player, roll: numberRolled, numberRolled1, numberRolled2, numberRolled3}]);
+  //   },
+  // });
 
   // Subscribe to the Winner event and set the winners state.
   useScaffoldEventSubscriber({
@@ -128,6 +161,9 @@ const Home: NextPage = () => {
   const rollTheDice = async () => {
     setDiceRolled(true);
     setDiceRollImage("ROLL");
+    setDiceRollImage1("ROLL1");
+    setDiceRollImage2("ROLL2");
+    setDiceRollImage3("ROLL3");
 
     try {
       await writeAsync();
@@ -141,7 +177,28 @@ const Home: NextPage = () => {
   let diceRollImg;
   if (diceRollImage) {
     diceRollImg = (
-      <Image className="rounded-xl" width={300} height={240} src={`/images/${diceRollImage}.png`} alt={"Dice Image"} unoptimized />
+      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage}.png`} alt={"Dice Image"} unoptimized />
+    );
+  }
+
+  let diceRollImg1;
+  if (diceRollImage1) {
+    diceRollImg1 = (
+      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage1}.png`} alt={"Dice Image"} unoptimized />
+    );
+  }
+
+  let diceRollImg2;
+  if (diceRollImage2) {
+    diceRollImg2 = (
+      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage2}.png`} alt={"Dice Image"} unoptimized />
+    );
+  }
+
+  let diceRollImg3;
+  if (diceRollImage3) {
+    diceRollImg3 = (
+      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage3}.png`} alt={"Dice Image"} unoptimized />
     );
   }
 
@@ -168,9 +225,9 @@ const Home: NextPage = () => {
                 {players
                   .slice()
                   .reverse()
-                  .map(({ player, roll }, i) => (
+                  .map(({ player, roll, roll1, roll2, roll3 }, i) => (
                     <li key={i} className="flex flex-row tracking-widest py-2 items-center text-base">
-                      <Address address={player} /> &nbsp;Roll:&nbsp;{roll}
+                      <Address address={player} /> &nbsp;Roll:&nbsp;{roll}&nbsp;{roll1}&nbsp;{roll2}&nbsp;{roll3}
                     </li>
                   ))}
               </ul>
@@ -180,6 +237,9 @@ const Home: NextPage = () => {
                 Start!
               </button>
               <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg}</div>
+              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg1}</div>
+              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg2}</div>
+              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg3}</div>
             </div>
             <div className="flex flex-col flex-grow order-last lg:-order-none lg:min-w-[25%] w-full min-h-[300px] bg-base-100 px-4 py-2 text-center items-center max-w-xs rounded-3xl">
               <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Matched</h2>
