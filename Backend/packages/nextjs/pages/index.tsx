@@ -27,6 +27,7 @@ type Players = {
 
 type Winners = {
   winner: string;
+  matched: string;
   amount: string;
 };
 
@@ -151,8 +152,8 @@ const Home: NextPage = () => {
   useScaffoldEventSubscriber({
     contractName: "DiceGame",
     eventName: "Winner",
-    listener: (winner, amount) => {
-      setWinners((prevWinners): Winners[] => [...prevWinners, { winner, amount: formatEther(amount) }]);
+    listener: (winner, matched, amount) => {
+      setWinners((prevWinners): Winners[] => [...prevWinners, { winner, matched: matched.toString(), amount: formatEther(amount) }]);
       // console.log(winner, amount);
     },
   });
@@ -247,10 +248,11 @@ const Home: NextPage = () => {
                 {winners
                   .slice()
                   .reverse()
-                  .map(({ winner, amount }, i) => (
+                  .map(({ winner, matched, amount }, i) => (
                     <li key={i} className="flex flex-row items-center py-2 tracking-widest text-sm">
                       <Address address={winner} />
-                      &nbsp;Amt:&nbsp;
+                      &nbsp;Matched:&nbsp; {matched} &nbsp;
+                      &nbsp;Prize:&nbsp;
                       <button className="flex flex-row w-full">
                         { "⟠" }&nbsp;{Number(amount).toFixed(5)}
                       </button>

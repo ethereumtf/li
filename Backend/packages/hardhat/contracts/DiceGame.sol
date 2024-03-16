@@ -9,7 +9,7 @@ contract DiceGame {
     uint256 public prize = 0;
 
     event Roll(address indexed player, uint256 roll, uint256 roll1, uint256 roll2, uint256 roll3);
-    event Winner(address winner, uint256 amount);
+    event Winner(address winner, uint256 matched, uint256 amount);
 
     constructor() payable {
         resetPrize();
@@ -49,16 +49,29 @@ contract DiceGame {
 
         emit Roll(msg.sender, roll, roll1, roll2, roll3);
 
-        if (roll % 2 != 0) {
-            return;
+
+        uint256 count = 0;
+        if (roll % 2 == 0) {
+            count++;
         }
+        if (roll1 % 2 == 0) {
+            count++;
+        }
+        if (roll2 % 2 == 0) {
+            count++;
+        }
+        if (roll3 % 2 == 0) {
+            count++;
+        }
+        uint256 matched = count;
+
 
         uint256 amount = prize;
         (bool sent, ) = msg.sender.call{value: amount}("");
         require(sent, "Failed to send Ether");
 
         resetPrize();
-        emit Winner(msg.sender, amount);
+        emit Winner(msg.sender, matched, amount);
     }
 
     receive() external payable {  }
