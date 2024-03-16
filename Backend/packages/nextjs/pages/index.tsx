@@ -15,7 +15,7 @@ import {
 // import { useAccount } from "wagmi";
 
 // Setting roll value as a constant.
-const ROLL_VALUE = "0.002";
+const ROLL_VALUE = "0.001";
 
 type Players = {
   player: string;
@@ -107,9 +107,16 @@ const Home: NextPage = () => {
     functionName: "prize",
   });
 
+  // Read impact_fund data
+  const { data: impact_fund } = useScaffoldContractRead({
+    contractName: "DiceGame",
+    functionName: "impact_fund", // Fix: Change "impact_fund" to "prize"
+  });
+
   const ETHPrice = useEthPrice();
   // Calculate the prize value to be displayed based on the toggle state
   const prizeValue = prize && valueDisplay(prize);
+  const fundValue = impact_fund && Number(formatEther(impact_fund)).toFixed(5);
 
   // A function to help toggle between ETH value and dollar value.
   function valueDisplay(value: BigNumber) {
@@ -211,7 +218,7 @@ const Home: NextPage = () => {
       </Head>
 
       <div className="flex items-center flex-col flex-grow pt-5">
-        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Lotto for Social Impact!</h1>
+        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Lotto for Social Impact! | Amount raised for social impact : {fundValue} ETH</h1>
 
         <div className="flex-grow bg-base-300 w-full px-8 py-5">
           <div className="items-center py-3 text-center">
@@ -221,13 +228,13 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-12 m-auto">
             <div className="flex flex-col -order-first lg:order-none bg-base-100 px-4 py-2 w-full lg:min-w-[25%] min-h-[300px] text-center items-center max-w-xs rounded-3xl">
-              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Trial</h2>
+              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Draw</h2>
               <ul>
                 {players
                   .slice()
                   .reverse()
                   .map(({ player, roll, roll1, roll2, roll3 }, i) => (
-                    <li key={i} className="flex flex-row tracking-widest py-2 items-center text-base">
+                    <li key={i} className="flex flex-row tracking-widest py-2 items-center text-lg">
                       <Address address={player} /> &nbsp;Roll:&nbsp;{roll}&nbsp;{roll1}&nbsp;{roll2}&nbsp;{roll3}
                     </li>
                   ))}
@@ -244,17 +251,18 @@ const Home: NextPage = () => {
   
             </div>
             <div className="flex flex-col flex-grow order-last lg:-order-none lg:min-w-[25%] w-full min-h-[300px] bg-base-100 px-4 py-2 text-center items-center max-w-xs rounded-3xl">
-              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Matched</h2>
+              <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Prize</h2>
               <ul>
                 {winners
                   .slice()
                   .reverse()
                   .map(({ winner, matched, amount }, i) => (
-                    <li key={i} className="flex flex-row items-center py-2 tracking-widest text-sm">
-                      <Address address={winner} />
-                      &nbsp;Matched:&nbsp; {matched} &nbsp;
+                    <li key={i} className="flex flex-row items-center py-2 tracking-widest text-lg">
+                      {/* <Address address={winner} /> */}
+                      &nbsp;
+                      {Number(matched).toFixed(0)} Matched! &nbsp;
                       &nbsp;Prize:&nbsp;
-                      <button className="flex flex-row w-full">
+                      <button className="flex flex-row">
                         { "⟠" }&nbsp;{Number(amount).toFixed(5)}
                       </button>
                     </li>

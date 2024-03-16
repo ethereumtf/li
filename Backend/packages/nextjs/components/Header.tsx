@@ -73,9 +73,9 @@ export const Header = () => {
           )}
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6">
-          <div className="flex relative w-10 h-10">
+          {/* <div className="flex relative w-10 h-10">
             <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
+          </div> */}
           <div className="flex flex-col">
             <span className="font-bold leading-tight">Lotto Impact</span>
             <span className="text-xs">New concept for Universal Basic Income</span>
@@ -85,7 +85,7 @@ export const Header = () => {
       </div>
       <div className="navbar-end flex-grow mr-4">
         <RainbowKitCustomConnectButton />
-        <FaucetButton />
+        {/* <FaucetButton /> */}
       </div>
     </div>
   );

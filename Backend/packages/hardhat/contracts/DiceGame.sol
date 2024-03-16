@@ -8,6 +8,8 @@ contract DiceGame {
     uint256 public nonce = 0;
     uint256 public prize = 0;
 
+    uint256 public impact_fund = 0;
+
     event Roll(address indexed player, uint256 roll, uint256 roll1, uint256 roll2, uint256 roll3);
     event Winner(address winner, uint256 matched, uint256 amount);
 
@@ -20,7 +22,7 @@ contract DiceGame {
     }
 
     function rollTheDice() public payable {
-        require(msg.value >= 0.002 ether, "Failed to send enough value");
+        require(msg.value >= 0.001 ether, "Failed to send enough value");
 
         bytes32 prevHash = blockhash(block.number - 1);
         bytes32 hash = keccak256(abi.encodePacked(prevHash, address(this), nonce++));
@@ -38,18 +40,6 @@ contract DiceGame {
         bytes32 hash3 = keccak256(abi.encodePacked(prevHash3, address(this), nonce++));
         uint256 roll3 = uint256(hash3) % 10;
 
-
-        console.log('\t',"   Dice Game Roll:",roll);
-        console.log('\t',"   Dice Game Roll:",roll1);
-        console.log('\t',"   Dice Game Roll:",roll2);
-        console.log('\t',"   Dice Game Roll:",roll3);
-
-        nonce++;
-        prize += ((msg.value * 40) / 100);
-
-        emit Roll(msg.sender, roll, roll1, roll2, roll3);
-
-
         uint256 count = 0;
         if (roll % 2 == 0) {
             count++;
@@ -65,6 +55,12 @@ contract DiceGame {
         }
         uint256 matched = count;
 
+        nonce++;
+        prize = ((msg.value * matched * 25) / 100);
+
+        impact_fund += (msg.value - prize);
+
+        emit Roll(msg.sender, roll, roll1, roll2, roll3);
 
         uint256 amount = prize;
         (bool sent, ) = msg.sender.call{value: amount}("");
