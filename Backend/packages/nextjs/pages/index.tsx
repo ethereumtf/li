@@ -178,28 +178,28 @@ const Home: NextPage = () => {
   let diceRollImg;
   if (diceRollImage) {
     diceRollImg = (
-      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage}.png`} alt={"Dice Image"} unoptimized />
+      <Image className="rounded-xl" width={75} height={60} src={`/images/${diceRollImage}.png`} alt={"Dice Image"} unoptimized />
     );
   }
 
   let diceRollImg1;
   if (diceRollImage1) {
     diceRollImg1 = (
-      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage1}.png`} alt={"Dice Image"} unoptimized />
+      <Image className="rounded-xl" width={75} height={60} src={`/images/${diceRollImage1}.png`} alt={"Dice Image"} unoptimized />
     );
   }
 
   let diceRollImg2;
   if (diceRollImage2) {
     diceRollImg2 = (
-      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage2}.png`} alt={"Dice Image"} unoptimized />
+      <Image className="rounded-xl" width={75} height={60} src={`/images/${diceRollImage2}.png`} alt={"Dice Image"} unoptimized />
     );
   }
 
   let diceRollImg3;
   if (diceRollImage3) {
     diceRollImg3 = (
-      <Image className="rounded-xl" width={100} height={80} src={`/images/${diceRollImage3}.png`} alt={"Dice Image"} unoptimized />
+      <Image className="rounded-xl" width={75} height={80} src={`/images/${diceRollImage3}.png`} alt={"Dice Image"} unoptimized />
     );
   }
 
@@ -211,7 +211,7 @@ const Home: NextPage = () => {
       </Head>
 
       <div className="flex items-center flex-col flex-grow pt-5">
-        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Lotto for Social Impack!</h1>
+        <h1 className="text-md font-semibold tracking-widest py-5 text-center">Lotto for Social Impact!</h1>
 
         <div className="flex-grow bg-base-300 w-full px-8 py-5">
           <div className="items-center py-3 text-center">
@@ -237,12 +237,11 @@ const Home: NextPage = () => {
               <button disabled={diceRolled} className="btn rounded-lg" onClick={rollTheDice}>
                 Start!
               </button>
-
-              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg}</div>
-              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg1}</div>
-              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg2}</div>
-              <div className="my-4 transition ease-in-out delay-150 duration-200">{diceRollImg3}</div>
-              
+              <br/>
+              <div className="my-4 transition ease-in-out delay-150 duration-200">
+                {diceRollImg} {diceRollImg1} {diceRollImg2} {diceRollImg3}
+              </div>
+  
             </div>
             <div className="flex flex-col flex-grow order-last lg:-order-none lg:min-w-[25%] w-full min-h-[300px] bg-base-100 px-4 py-2 text-center items-center max-w-xs rounded-3xl">
               <h2 className="text-lg tracking-widest uppercase font-bold mb-4">Matched</h2>
