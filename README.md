@@ -1,10 +1,12 @@
-# L. I!
+# Lotto Impact!
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Description
 
 ETHGlobal Lonodn project.
+
+Good Deed Lotto for Social Impact.
 
 ## Table of Contents
 
