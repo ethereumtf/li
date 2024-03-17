@@ -8,6 +8,8 @@ Help other people and win big prize with lotto for social impact.
 
 New concept of Universal Basic Income.
 
+[Live demo - lotto.im](http://lotto.im)
+
 ## Description
 
 ETHGlobal Lonodn project.
