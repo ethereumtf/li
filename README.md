@@ -1,8 +1,10 @@
 # Lotto Impact!
 
+
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Help otehr people and win big with lotto for social impact. 
+Help other people and win big prize with lotto for social impact. 
 
 New concept of Universal Basic Income.
 
